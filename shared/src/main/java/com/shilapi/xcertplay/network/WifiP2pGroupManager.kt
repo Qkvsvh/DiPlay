@@ -718,7 +718,13 @@ class WifiP2pGroupManager(
     private fun checkPrerequisites(station: Station) {
         val wifi = appContext.getSystemService(WifiManager::class.java)
         val fiveGhzSupported = runCatching { wifi?.is5GHzBandSupported }.getOrNull()
-        val wifiEnabled = runCatching { wifi?.isWifiEnabled }.getOrNull()
+        var wifiEnabled = runCatching { wifi?.isWifiEnabled }.getOrNull()
+        // This head unit starts with Wi-Fi off and cannot be switched on by an ordinary app.
+        if (wifiEnabled == false && LynkHeadUnit.detected &&
+            LynkHeadUnit.ensureWifiEnabled(appContext, WIFI_ENABLE_TIMEOUT_MILLIS)
+        ) {
+            wifiEnabled = runCatching { wifi?.isWifiEnabled }.getOrNull()
+        }
         val locationEnabled = runCatching {
             appContext.getSystemService(LocationManager::class.java)?.isLocationEnabled
         }.getOrNull()
@@ -930,6 +936,7 @@ class WifiP2pGroupManager(
         const val TAG = "xcertplay-usb"
         const val NANOS_PER_MILLISECOND = 1_000_000L
         const val REMOVE_GROUP_TIMEOUT_MILLIS = 2_000L
+        const val WIFI_ENABLE_TIMEOUT_MILLIS = 8_000L
         const val UNKNOWN_CHANNEL = 0
         val REQUEST_POLL_NANOS: Long = TimeUnit.MILLISECONDS.toNanos(500)
         const val TOKEN_ALPHABET =

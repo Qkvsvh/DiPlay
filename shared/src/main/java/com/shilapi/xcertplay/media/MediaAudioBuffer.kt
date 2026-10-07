@@ -7,7 +7,13 @@ package com.shilapi.xcertplay.media
  */
 object MediaAudioBuffer {
     const val DEFAULT_MILLIS = 300
-    val presets = listOf(DEFAULT_MILLIS, 500, 1000)
+    // The Geely/Lynk head unit gets a longer music buffer as its default; other devices keep 300–1000.
+    val presets = listOf(DEFAULT_MILLIS, 500, 1000) +
+        if (com.shilapi.xcertplay.network.LynkHeadUnit.detected) {
+            listOf(com.shilapi.xcertplay.network.LynkHeadUnit.MEDIA_BUFFER_MILLIS)
+        } else {
+            emptyList()
+        }
 
     private const val HEADROOM_MILLIS = 200 // room above the start level so bursts after a gap fit
     private const val MIN_TRACK_BUFFER_BYTES = 16 * 1024

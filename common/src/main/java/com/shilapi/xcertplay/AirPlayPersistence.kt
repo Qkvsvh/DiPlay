@@ -299,11 +299,19 @@ object AirPlayPersistence {
             .apply()
     }
 
-    fun loadWifiP2pPreferredChannel(context: Context): Int = runCatching {
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getInt(KEY_WIFI_P2P_PREFERRED_CHANNEL, WifiP2pChannels.AUTO)
-            .takeIf(WifiP2pChannels::isValid) ?: WifiP2pChannels.AUTO
-    }.getOrDefault(WifiP2pChannels.AUTO)
+    fun loadWifiP2pPreferredChannel(context: Context): Int {
+        // The Geely/Lynk head unit rejects the automatic channel 36, so default to 5 GHz channel 149.
+        val fallback = if (com.shilapi.xcertplay.network.LynkHeadUnit.detected) {
+            com.shilapi.xcertplay.network.LynkHeadUnit.PREFERRED_WIFI_P2P_CHANNEL
+        } else {
+            WifiP2pChannels.AUTO
+        }
+        return runCatching {
+            context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .getInt(KEY_WIFI_P2P_PREFERRED_CHANNEL, fallback)
+                .takeIf(WifiP2pChannels::isValid) ?: fallback
+        }.getOrDefault(fallback)
+    }
 
     fun saveWifiP2pPreferredChannel(context: Context, channel: Int) {
         require(WifiP2pChannels.isValid(channel))
@@ -480,12 +488,25 @@ object AirPlayPersistence {
 
     fun loadMediaBufferMillis(context: Context): Int = com.shilapi.xcertplay.media.MediaAudioBuffer.sanitize(
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getInt(KEY_MEDIA_BUFFER_MS, com.shilapi.xcertplay.media.MediaAudioBuffer.DEFAULT_MILLIS),
+            .getInt(
+                KEY_MEDIA_BUFFER_MS,
+                if (com.shilapi.xcertplay.network.LynkHeadUnit.detected) {
+                    com.shilapi.xcertplay.network.LynkHeadUnit.MEDIA_BUFFER_MILLIS
+                } else {
+                    com.shilapi.xcertplay.media.MediaAudioBuffer.DEFAULT_MILLIS
+                },
+            ),
     )
 
-    /** CarPlay's buffered music (Apple Music sends ahead over TCP); off by default, applies at reconnect. */
+    /**
+     * CarPlay's buffered music (Apple Music sends ahead over TCP); applies at reconnect. On the
+     * Geely/Lynk head unit the realtime AAC stream stops after a moment, so it is on by default.
+     */
     fun loadMainBufferedAudio(context: Context): Boolean =
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_MAIN_BUFFERED_AUDIO, false)
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(
+            KEY_MAIN_BUFFERED_AUDIO,
+            com.shilapi.xcertplay.network.LynkHeadUnit.detected,
+        )
 
     fun saveMainBufferedAudio(context: Context, enabled: Boolean) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putBoolean(KEY_MAIN_BUFFERED_AUDIO, enabled).apply()
