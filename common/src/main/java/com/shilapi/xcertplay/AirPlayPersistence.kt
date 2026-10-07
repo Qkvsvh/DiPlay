@@ -450,11 +450,16 @@ object AirPlayPersistence {
             .apply()
     }
 
-    fun loadOemLabel(context: Context): String =
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getString(KEY_OEM_LABEL, DEFAULT_OEM_LABEL)
-            // iOS hides the car icon without a label.
-            .orEmpty().ifBlank { DEFAULT_OEM_LABEL }
+    fun loadOemLabel(context: Context): String {
+        val lynk = com.shilapi.xcertplay.network.LynkHeadUnit.detected
+        val fallback = if (lynk) com.shilapi.xcertplay.network.LynkHeadUnit.OEM_LABEL else DEFAULT_OEM_LABEL
+        val saved = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            .getString(KEY_OEM_LABEL, null)
+        // This head unit ships with the stock "BYD" label; replace it even if an earlier install saved it.
+        if (lynk && saved == DEFAULT_OEM_LABEL) return fallback
+        // iOS hides the car icon without a label.
+        return saved?.ifBlank { fallback } ?: fallback
+    }
 
     fun saveOemLabel(context: Context, oemLabel: String) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()

@@ -31,6 +31,9 @@ object LynkHeadUnit {
     /** Music jitter buffer used by default on this car. */
     const val MEDIA_BUFFER_MILLIS = 2000
 
+    /** CarPlay shows this name under the car button instead of the stock "BYD". */
+    const val OEM_LABEL = "LYNK & CO"
+
     private val identifiers: List<String>
         get() = runCatching {
             listOf(
