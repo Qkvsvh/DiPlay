@@ -61,7 +61,13 @@ internal class MicrophoneUplink(
 
         val source = when (config.audioType) {
             "telephony" -> MediaRecorder.AudioSource.VOICE_COMMUNICATION
-            "speechrecognition" -> MediaRecorder.AudioSource.VOICE_RECOGNITION
+            // The Geely/Lynk head unit only opens the microphone for the voice-communication
+            // source; its voice-recognition source records silence (Siri never hears).
+            "speechrecognition" -> if (com.shilapi.xcertplay.network.LynkHeadUnit.detected) {
+                MediaRecorder.AudioSource.VOICE_COMMUNICATION
+            } else {
+                MediaRecorder.AudioSource.VOICE_RECOGNITION
+            }
             else -> MediaRecorder.AudioSource.MIC
         }
         val nextEncoder = if (config.codec == AudioCodecKind.OPUS) {
