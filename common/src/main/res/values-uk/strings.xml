@@ -318,6 +318,7 @@
     <string name="running">Працює</string>
     <string name="s_0_3x">0.3x</string>
     <string name="s_1000_ms_most_stable">1000 мс · найстабільніше</string>
+    <string name="music_buffer_millis">%1$d мс</string>
     <string name="s_1_0x">1.0x</string>
     <string name="s_1_choose_your_connection">1 · Виберіть спосіб підключення</string>
     <string name="s_1_connect_a_computer_with_adb_installed_to_the_car_using">1. Підключіть до автомобіля комп’ютер з установленим ADB через наявне USB-з’єднання або бездротове налагодження. Якщо автомобіль запитає, дозвольте налагодження.\n\n2. Виконайте цю команду в терміналі комп’ютера:</string>

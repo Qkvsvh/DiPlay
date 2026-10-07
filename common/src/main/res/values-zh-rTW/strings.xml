@@ -318,6 +318,7 @@
     <string name="running">執行中</string>
     <string name="s_0_3x">0.3x</string>
     <string name="s_1000_ms_most_stable">1000 毫秒 · 最穩定</string>
+    <string name="music_buffer_millis">%1$d 毫秒</string>
     <string name="s_1_0x">1.0x</string>
     <string name="s_1_choose_your_connection">1 · 選擇連線方式</string>
     <string name="s_1_connect_a_computer_with_adb_installed_to_the_car_using">1. 使用已安裝 ADB 的電腦，透過現有的 USB 或無線除錯連線至車機。如出現除錯授權提示，請予以允許。\n\n2. 在電腦終端機中執行此指令：</string>
