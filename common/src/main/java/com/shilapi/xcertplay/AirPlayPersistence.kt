@@ -642,7 +642,11 @@ object AirPlayPersistence {
     /** Fingers for the swipe-down that opens settings; some head units reserve three. */
     fun loadSettingsGestureFingers(context: Context): Int =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getInt(KEY_SETTINGS_GESTURE_FINGERS, 3).coerceIn(2, 4)
+            .getInt(
+                KEY_SETTINGS_GESTURE_FINGERS,
+                // The Geely/Lynk head unit does not reserve a three-finger gesture, so default to four.
+                if (com.shilapi.xcertplay.network.LynkHeadUnit.detected) 4 else 3,
+            ).coerceIn(2, 4)
 
     fun saveSettingsGestureFingers(context: Context, fingers: Int) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
@@ -789,7 +793,11 @@ object AirPlayPersistence {
 
     fun loadHideTopBar(context: Context): Boolean =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getBoolean(KEY_HIDE_TOP_BAR, true)
+            .getBoolean(
+                KEY_HIDE_TOP_BAR,
+                // The Geely/Lynk head unit keeps its status/navigation bars visible by default.
+                !com.shilapi.xcertplay.network.LynkHeadUnit.detected,
+            )
 
     fun saveHideTopBar(context: Context, hide: Boolean) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
@@ -799,7 +807,11 @@ object AirPlayPersistence {
 
     fun loadHideBottomBar(context: Context): Boolean =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getBoolean(KEY_HIDE_BOTTOM_BAR, true)
+            .getBoolean(
+                KEY_HIDE_BOTTOM_BAR,
+                // The Geely/Lynk head unit keeps its status/navigation bars visible by default.
+                !com.shilapi.xcertplay.network.LynkHeadUnit.detected,
+            )
 
     fun saveHideBottomBar(context: Context, hide: Boolean) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
