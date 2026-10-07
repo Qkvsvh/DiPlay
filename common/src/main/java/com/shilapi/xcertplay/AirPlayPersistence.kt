@@ -798,11 +798,8 @@ object AirPlayPersistence {
 
     fun loadHideTopBar(context: Context): Boolean =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getBoolean(
-                KEY_HIDE_TOP_BAR,
-                // The Geely/Lynk head unit keeps its status/navigation bars visible by default.
-                !com.shilapi.xcertplay.network.LynkHeadUnit.detected,
-            )
+            // The Lynk build hides the status bar by default.
+            .getBoolean(KEY_HIDE_TOP_BAR, true)
 
     fun saveHideTopBar(context: Context, hide: Boolean) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()

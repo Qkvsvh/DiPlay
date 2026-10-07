@@ -89,8 +89,11 @@ internal object GeelyWheelKeys {
                 override fun onHoldingPressStarted(keyCode: Int, softKeyFunction: Int) {}
                 override fun onHoldingPressStopped(keyCode: Int, softKeyFunction: Int) {}
                 override fun onLongPressTriggered(keyCode: Int, softKeyFunction: Int) {
+                    Log.i(TAG, "long press key=$keyCode func=$softKeyFunction")
                     // The microphone key's long press: Siri instead of the (disabled) HiCar.
-                    if (keyCode == KEY_VOICE_ASSIST) CarPlayMediaKeys.onExternalSiriKey()
+                    if (keyCode == KEY_VOICE_ASSIST) {
+                        Log.i(TAG, "Siri requested=${CarPlayMediaKeys.onExternalSiriKey()}")
+                    }
                 }
                 override fun onDoubleClick(keyCode: Int, softKeyFunction: Int) {}
             }
