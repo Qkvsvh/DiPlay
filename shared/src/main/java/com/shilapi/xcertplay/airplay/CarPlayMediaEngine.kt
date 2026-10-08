@@ -54,6 +54,9 @@ class CarPlayMediaEngine(
         val playoutLatencyMs: Int,
         @Volatile var firstSample: Int? = null,
         @Volatile var originNs: Long? = null,
+        // Highest RTP sample received. The /feedback sampleTime must never pass this, otherwise a
+        // stream that stopped receiving keeps reporting an advancing position and iOS stops it.
+        @Volatile var lastReceivedSample: Int? = null,
     )
 
     private data class PendingIapTunnel(
@@ -182,8 +185,10 @@ class CarPlayMediaEngine(
                     microphone?.let { sink.onMicrophoneStarted(streamId, it) }
                 }
 
-                override fun onRtp(rtp: ByteArray, sample: Int) =
+                override fun onRtp(rtp: ByteArray, sample: Int) {
+                    meta.lastReceivedSample = sample
                     sink.onAudioRtp(streamId, format, rtp, sample)
+                }
 
                 override fun onPacket(
                     wire: ByteArray,
@@ -436,8 +441,12 @@ class CarPlayMediaEngine(
                     (nowNs - originNs) / 1e9 - meta.playoutLatencyMs / 1000.0,
                 )
                 val firstUnsigned = firstSample.toLong() and 0xffff_ffffL
-                val sampleTime = (firstUnsigned + Math.round(elapsedSec * meta.format.sampleRate)) and
+                val wallClockSample = (firstUnsigned + Math.round(elapsedSec * meta.format.sampleRate)) and
                     0xffff_ffffL
+                // The accessory cannot have played past what it received. Clamp so a starved stream
+                // reports a frozen position instead of racing ahead, which makes iOS stop the audio.
+                val received = meta.lastReceivedSample?.toLong()?.and(0xffff_ffffL)
+                val sampleTime = if (received == null) wallClockSample else minOf(wallClockSample, received)
                 entry["streamConnectionID"] = unsignedPlistInteger(meta.connectionId ?: 0L)
                 entry["timestamp"] = session.syncedNtp()
                 entry["timestampRawNs"] = nowNs
