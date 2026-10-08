@@ -111,7 +111,7 @@ class CarPlayCallState(private val clock: () -> Long = System::currentTimeMillis
  * DiPlay goes away mid-call.
  */
 object BydCarPlayCall {
-    private const val TAG = "DiPlay-BYD-Call"
+    private const val TAG = "lynkPlay-BYD-Call"
     @Volatile internal var watcherReadyMillis = 8_000L
     private const val WATCHER_PROBE_INTERVAL_MILLIS = 250L
 

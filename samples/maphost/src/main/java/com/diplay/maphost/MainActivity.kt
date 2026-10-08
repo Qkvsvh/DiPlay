@@ -50,7 +50,7 @@ class MainActivity : Activity() {
         override fun onServiceDisconnected(name: ComponentName) {
             service = null
             attached = false
-            show("DiPlay stopped; waiting for it to come back")
+            show("lynkPlay stopped; waiting for it to come back")
         }
     }
 
@@ -105,12 +105,12 @@ class MainActivity : Activity() {
         val intent = Intent(ACTION)
         val info = packageManager.queryIntentServices(intent, 0).firstOrNull()?.serviceInfo
         if (info == null) {
-            show("DiPlay is not installed")
+            show("lynkPlay is not installed")
             return
         }
         intent.setClassName(info.packageName, info.name)
         bound = bindService(intent, connection, BIND_AUTO_CREATE)
-        show(if (bound) "Connecting to ${info.packageName}" else "DiPlay refused the connection")
+        show(if (bound) "Connecting to ${info.packageName}" else "lynkPlay refused the connection")
     }
 
     override fun onStop() {
@@ -140,7 +140,7 @@ class MainActivity : Activity() {
                 @Suppress("DEPRECATION")
                 val surfacePackage = message.data.getParcelable<SurfaceControlViewHost.SurfacePackage>(KEY_SURFACE_PACKAGE)
                 if (surfacePackage == null) {
-                    show("DiPlay sent no map")
+                    show("lynkPlay sent no map")
                     return
                 }
                 mapView.setChildSurfacePackage(surfacePackage)
@@ -154,7 +154,7 @@ class MainActivity : Activity() {
                 when (message.data.getString(KEY_ERROR)) {
                     ERROR_DISABLED -> "Turn on \"Share the live map with other launchers\" in DiPlay"
                     ERROR_UNSUPPORTED -> "This head unit is too old (Android 11 or newer is needed)"
-                    else -> "DiPlay could not show the map: ${message.data.getString(KEY_ERROR)}"
+                    else -> "lynkPlay could not show the map: ${message.data.getString(KEY_ERROR)}"
                 },
                 )
             }

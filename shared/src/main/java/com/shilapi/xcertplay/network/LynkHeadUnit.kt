@@ -23,7 +23,7 @@ import com.shilapi.xcertplay.adb.LocalAdb
  * units (and in unit tests, where `Build` reports Robolectric).
  */
 object LynkHeadUnit {
-    private const val TAG = "DiPlay-Lynk"
+    private const val TAG = "lynkPlay-Lynk"
 
     /** Wi-Fi Direct channel 149 (5 GHz): the car's framework rejects the automatically tried 36. */
     const val PREFERRED_WIFI_P2P_CHANNEL = 149

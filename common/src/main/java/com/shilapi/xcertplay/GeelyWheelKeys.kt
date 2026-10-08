@@ -25,7 +25,7 @@ import com.shilapi.xcertplay.network.LynkHeadUnit
  * Silently does nothing off this head unit ([LynkHeadUnit.detected]).
  */
 internal object GeelyWheelKeys {
-    private const val TAG = "DiPlay-GeelyWheel"
+    private const val TAG = "lynkPlay-GeelyWheel"
     private const val INPUT_PACKAGE = "com.geely.inputservice"
     private const val INPUT_CLASS = "com.geely.inputservice.InputService"
 
