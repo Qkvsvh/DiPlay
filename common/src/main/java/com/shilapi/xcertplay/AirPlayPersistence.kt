@@ -544,7 +544,9 @@ object AirPlayPersistence {
             .getInt(
                 KEY_MEDIA_BUFFER_MS,
                 if (com.shilapi.xcertplay.network.LynkHeadUnit.detected) {
-                    com.shilapi.xcertplay.network.LynkHeadUnit.MEDIA_BUFFER_MILLIS
+                    // The realtime stream this head unit delivers only lasts ~1.7 s, so a large
+                    // prebuffer would never fill and the track would never start. Keep it small.
+                    500
                 } else {
                     com.shilapi.xcertplay.media.MediaAudioBuffer.DEFAULT_MILLIS
                 },
