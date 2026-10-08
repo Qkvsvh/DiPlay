@@ -197,6 +197,12 @@ class CarPlayMediaEngine(
         )
         streams[streamKey] = audio
         audioMeta[streamKey] = meta
+        // The Geely/Lynk head unit only delivers the first input packet that normally triggers the
+        // microphone start on the first session; later sessions receive none, so start the uplink as
+        // soon as the input stream is set up (MicrophoneUplink.start is idempotent).
+        if (microphone != null && com.shilapi.xcertplay.network.LynkHeadUnit.detected) {
+            sink.onMicrophoneStarted(streamId, microphone)
+        }
         return linkedMapOf(
             "type" to type,
             "dataPort" to dataPort,
