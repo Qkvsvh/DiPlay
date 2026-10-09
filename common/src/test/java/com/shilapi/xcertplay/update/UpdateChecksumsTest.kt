@@ -14,7 +14,7 @@ class UpdateChecksumsTest {
 
     @Test
     fun parsesChecksumLinesWithTwoSpaces() {
-        val checksums = UpdateChecksums.parse("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad  DiPlay-0.2.14.apk\ne3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  SHA256SUMS.txt\n")
+        val checksums = UpdateChecksums.parse("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad  lynkPlay-0.2.14.apk\ne3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  SHA256SUMS.txt\n")
         assertEquals(
             mapOf(
                 "lynkPlay-0.2.14.apk" to "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",

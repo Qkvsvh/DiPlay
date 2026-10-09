@@ -101,8 +101,19 @@ internal object GeelyWheelKeys {
                 manager = input
                 listener = registered
             }
-            runCatching { input.registerListener(registered, context.packageName, KEY_CODES) }
-                .onSuccess { Log.i(TAG, "registered for wheel media keys") }
+            runCatching {
+                // With CarPlay audio on the car's Bluetooth, the head unit's own AVRCP already drives
+                // the iPhone's music, so forwarding play/pause and skip over iAP2 as well would
+                // double-fire. Keep only the microphone key (long press -> Siri) then.
+                val bluetoothAudio = AirPlayPersistence.loadCarBluetoothAudio(context)
+                val codes = if (bluetoothAudio) intArrayOf(KEY_VOICE_ASSIST) else KEY_CODES
+                if (bluetoothAudio) {
+                    Log.i(TAG, "car Bluetooth audio on: media keys pass to the head unit, only the Siri key is wired")
+                }
+                input.registerListener(registered, context.packageName, codes)
+                codes
+            }
+                .onSuccess { Log.i(TAG, "registered for wheel key codes=${it.joinToString()}") }
                 .onFailure { Log.w(TAG, "registerListener failed", it) }
         }
 

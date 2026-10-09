@@ -56,12 +56,12 @@ class UsbAutoConfirmServiceTest {
         assertFalse(UsbAutoConfirmService.isSystemUsbWindow("com.android.systemui", "com.android.systemui.media.MediaProjectionPermissionActivity"))
     }
 
-    @Test fun promptMustNameDiPlayAndUsbExplicitly() {
-        assertTrue(UsbAutoConfirmService.isTargetPrompt("Allow DiPlay to access this USB device?", "lynkPlay"))
-        assertTrue(UsbAutoConfirmService.isTargetPrompt("允许 DiPlay 访问 USB 设备？", "lynkPlay"))
+    @Test fun promptMustNameLynkPlayAndUsbExplicitly() {
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("Allow lynkPlay to access this USB device?", "lynkPlay"))
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("允许 lynkPlay 访问 USB 设备？", "lynkPlay"))
         assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow CarPlay access to iPhone?", "lynkPlay"))
-        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow DiPlay to access your contacts?", "lynkPlay"))
-        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow FakeDiPlay USB access?", "lynkPlay"))
+        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow lynkPlay to access your contacts?", "lynkPlay"))
+        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow FakelynkPlay USB access?", "lynkPlay"))
         assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow USB access?", ""))
     }
     @Test fun systemUsbPromptClicksOnlyWhenTheNamedAppMatches() {
