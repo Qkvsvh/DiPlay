@@ -22,6 +22,10 @@ import com.shilapi.xcertplay.network.LynkHeadUnit
  * `registerListener` has no permission check, so we subscribe to the raw codes there (exactly how
  * the car's own `KeyInputController` does) and forward them to the active CarPlay session.
  *
+ * With [AirPlayPersistence.loadCarBluetoothAudio] on, the car's own Bluetooth (AVRCP) control drives
+ * the iPhone's music, so forwarding the media keys too would double-fire; only the microphone key is
+ * registered then, for the long-press Siri shortcut.
+ *
  * Silently does nothing off this head unit ([LynkHeadUnit.detected]).
  */
 internal object GeelyWheelKeys {
