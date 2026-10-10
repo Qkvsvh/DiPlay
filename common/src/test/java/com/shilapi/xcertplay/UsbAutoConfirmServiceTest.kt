@@ -2,6 +2,7 @@ package com.shilapi.xcertplay
 
 import android.content.Context
 import android.provider.Settings
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -56,14 +57,35 @@ class UsbAutoConfirmServiceTest {
         assertFalse(UsbAutoConfirmService.isSystemUsbWindow("com.android.systemui", "com.android.systemui.media.MediaProjectionPermissionActivity"))
     }
 
-    @Test fun promptMustNameLynkPlayAndUsbExplicitly() {
-        assertTrue(UsbAutoConfirmService.isTargetPrompt("Allow lynkPlay to access this USB device?", "lynkPlay"))
-        assertTrue(UsbAutoConfirmService.isTargetPrompt("允许 lynkPlay 访问 USB 设备？", "lynkPlay"))
+    @Test fun promptMustNameLynkPlayInEveryAndroidWording() {
+        // Android 7.1 and 10+ wording, in English and Chinese (#409, #521).
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("Allow the app lynkPlay to access the USB device?", "lynkPlay"))
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("允许应用“lynkPlay”访问该USB设备吗？", "lynkPlay"))
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("Allow lynkPlay to access iPhone?", "lynkPlay"))
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("要允许lynkPlay访问iPhone吗？", "lynkPlay"))
+        assertTrue(UsbAutoConfirmService.isTargetPrompt("Always open lynkPlay when iPhone is connected", "lynkPlay"))
         assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow CarPlay access to iPhone?", "lynkPlay"))
-        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow lynkPlay to access your contacts?", "lynkPlay"))
-        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow FakelynkPlay USB access?", "lynkPlay"))
+        assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow FakelynkPlay to access iPhone?", "lynkPlay"))
+        assertFalse(UsbAutoConfirmService.isTargetPrompt("要允许lynkPlayer访问iPhone吗？", "lynkPlay"))
         assertFalse(UsbAutoConfirmService.isTargetPrompt("Allow USB access?", ""))
     }
+
+    @Test fun bydAccessibilityScreenIsUsedWhenTheStandardActionIsMissing() {
+        val context = org.mockito.Mockito.mock(Context::class.java)
+        val opened = mutableListOf<android.content.Intent>()
+        org.mockito.Mockito.doAnswer { call ->
+            val intent = call.getArgument<android.content.Intent>(0)
+            if (intent.action == Settings.ACTION_ACCESSIBILITY_SETTINGS) throw android.content.ActivityNotFoundException()
+            opened += intent
+            null
+        }.`when`(context).startActivity(org.mockito.ArgumentMatchers.any(android.content.Intent::class.java))
+        assertTrue(UsbAutoConfirmService.openSettings(context))
+        assertEquals(
+            listOf("com.byd.systemsettings/com.byd.systemsettings.accessibility.AccessibilityMainActivity"),
+            opened.map { it.component!!.flattenToString() },
+        )
+    }
+
     @Test fun systemUsbPromptClicksOnlyWhenTheNamedAppMatches() {
         val service = org.mockito.Mockito.spy(org.robolectric.Robolectric.buildService(UsbAutoConfirmService::class.java).create().get())
         val root = org.mockito.Mockito.mock(android.view.accessibility.AccessibilityNodeInfo::class.java)
