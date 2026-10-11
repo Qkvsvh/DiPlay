@@ -33,14 +33,6 @@ internal object GeelyWheelKeys {
     private const val INPUT_PACKAGE = "com.geely.inputservice"
     private const val INPUT_CLASS = "com.geely.inputservice.InputService"
 
-    // KeyCode.KEYCODE_R_MEDIA_* in the head unit's com.geely.lib.oneosapi.input.
-    private const val KEY_PLAY_PAUSE = 200085
-    private const val KEY_NEXT = 200087
-    private const val KEY_PREVIOUS = 200088
-    // KEYCODE_R_VOICE_ASSIST: the steering-wheel microphone key (long press used to open HiCar).
-    private const val KEY_VOICE_ASSIST = 200231
-    private val KEY_CODES = intArrayOf(KEY_PLAY_PAUSE, KEY_NEXT, KEY_PREVIOUS, KEY_VOICE_ASSIST)
-
     private const val RETRY_MILLIS = 3_000L
 
     private val handler = Handler(Looper.getMainLooper())
@@ -95,7 +87,7 @@ internal object GeelyWheelKeys {
                 override fun onLongPressTriggered(keyCode: Int, softKeyFunction: Int) {
                     Log.i(TAG, "long press key=$keyCode func=$softKeyFunction")
                     // The microphone key's long press: Siri instead of the (disabled) HiCar.
-                    if (keyCode == KEY_VOICE_ASSIST) {
+                    if (keyCode == GeelyWheelKeyCodes.KEY_VOICE_ASSIST) {
                         Log.i(TAG, "Siri requested=${CarPlayMediaKeys.onExternalSiriKey()}")
                     }
                 }
@@ -110,7 +102,7 @@ internal object GeelyWheelKeys {
                 // the iPhone's music, so forwarding play/pause and skip over iAP2 as well would
                 // double-fire. Keep only the microphone key (long press -> Siri) then.
                 val bluetoothAudio = AirPlayPersistence.loadCarBluetoothAudio(context)
-                val codes = if (bluetoothAudio) intArrayOf(KEY_VOICE_ASSIST) else KEY_CODES
+                val codes = GeelyWheelKeyCodes.registeredCodes(bluetoothAudio)
                 if (bluetoothAudio) {
                     Log.i(TAG, "car Bluetooth audio on: media keys pass to the head unit, only the Siri key is wired")
                 }
@@ -144,9 +136,9 @@ internal object GeelyWheelKeys {
 
     private fun forward(keyCode: Int) {
         val index = when (keyCode) {
-            KEY_PLAY_PAUSE -> CarPlayMediaButton.PLAY_PAUSE
-            KEY_NEXT -> CarPlayMediaButton.NEXT
-            KEY_PREVIOUS -> CarPlayMediaButton.PREVIOUS
+            GeelyWheelKeyCodes.KEY_PLAY_PAUSE -> CarPlayMediaButton.PLAY_PAUSE
+            GeelyWheelKeyCodes.KEY_NEXT -> CarPlayMediaButton.NEXT
+            GeelyWheelKeyCodes.KEY_PREVIOUS -> CarPlayMediaButton.PREVIOUS
             else -> return
         }
         CarPlayMediaKeys.onExternalMediaKey(index)
