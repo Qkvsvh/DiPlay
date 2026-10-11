@@ -602,12 +602,11 @@ object AirPlayPersistence {
 
     /**
      * Offer no CarPlay audio, so the iPhone keeps audio on its Bluetooth link with the car; applies
-     * at reconnect. On the Geely/Lynk head unit the CarPlay realtime audio stops after ~2 s, so the
-     * car's Bluetooth is the reliable path and is on by default there.
+     * at reconnect. Off by default; turn it on where the CarPlay realtime audio stops after ~2 s.
      */
     fun loadCarBluetoothAudio(context: Context): Boolean =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getBoolean(KEY_CAR_BLUETOOTH_AUDIO, com.shilapi.xcertplay.network.LynkHeadUnit.detected)
+            .getBoolean(KEY_CAR_BLUETOOTH_AUDIO, false)
 
     fun saveCarBluetoothAudio(context: Context, enabled: Boolean) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putBoolean(KEY_CAR_BLUETOOTH_AUDIO, enabled).apply()
