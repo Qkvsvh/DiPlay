@@ -811,4 +811,11 @@
     <string name="bluetooth_connections_not_real">Bluetooth Android на цьому головному пристрої повідомляє про з’єднання, але до iPhone нічого не доходить: «успішно» під’єднується навіть служба, якої не існує. Bluetooth тут обслуговує власний модуль виробника, недоступний застосункам, тому бездротовий CarPlay на цьому головному пристрої працювати не може. Спробуйте з’єднання через USB.</string>
     <string name="settings_fce_cluster_guidance">Підказки на панелі приладів FCE (експериментально)</string>
     <string name="settings_fce_cluster_guidance_description">Показує стрілки CarPlay і відстань до наступного маневру в навігаційному поданні панелі приладів на головних пристроях FCE, записуючи дані в сервіс автомобіля. Перевірено лише на одному автомобілі; вимкніть, якщо панель поводиться незвично.</string>
+    <string name="settings_launcher_bubble">Бульбашка на головному екрані</string>
+    <string name="settings_launcher_bubble_description">Показує логотип lynkPlay як бульбашку поверх головного екрана: торкніться, щоб повернутися до CarPlay, і перетягуйте її будь-куди. Вона ховається, коли відкрито lynkPlay, і повертається після виходу. Утримуйте, щоб закріпити положення, і утримуйте знову, щоб зняти закріплення. Потрібен дозвіл «показ поверх інших програм».</string>
+    <string name="settings_launcher_bubble_size">Розмір бульбашки</string>
+    <string name="settings_launcher_bubble_locked">Положення закріплено</string>
+    <string name="settings_launcher_bubble_unlocked">Закріплення знято</string>
+    <string name="settings_launcher_bubble_hold_to_lock">Утримуйте: закріпити</string>
+    <string name="settings_launcher_bubble_hold_to_unlock">Утримуйте: зняти</string>
 </resources>

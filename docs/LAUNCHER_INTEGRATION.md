@@ -1,12 +1,13 @@
 # CarPlay on your launcher's home screen
 
-DiPlay can put CarPlay information on a launcher's home screen in three ways:
+DiPlay can put CarPlay information on a launcher's home screen in four ways:
 
 | | What it shows | Works with | Needs |
 |---|---|---|---|
 | [Navigation widget](#1-navigation-widget) | Next turn arrow, distance, road, arrival, song | Any launcher that hosts standard Android widgets | Nothing extra |
 | [Map card](#2-map-card) | The live CarPlay map, as a card on the home screen | Any launcher, including BYD home and map home | Two permissions (see below) |
 | [Embedded map](#3-embedded-live-map-for-launcher-developers) | The live CarPlay map inside the launcher's own layout | Launchers that add support for it | Launcher code, Android 11+ |
+| [Home-screen bubble](#4-home-screen-bubble) | The lynkPlay logo as a shortcut back to CarPlay | Any launcher, including ones that host only their own cards | Display over other apps |
 
 The live map is CarPlay's instrument-cluster map: the map the iPhone draws for the dashboard. The map card and the embedded map need **CarPlay map on instrument cluster** turned on in DiPlay. Without it, the iPhone does not send that map.
 
@@ -178,6 +179,32 @@ It runs without system privileges. BYD's home stays installed, and the **BYD hom
 
   BYD's map-mode button also returns to BYD's home, because BYD's own home list contains only BYD launchers.
 
+## 4. Home-screen bubble
+
+A round shortcut that shows the lynkPlay logo over the launcher's home screen: tap it to come back
+to CarPlay, drag it anywhere. It is an app-drawn window, not a widget, so it also works on launchers
+that host only their own cards (Lynk & Co / Geely's `OneOS-Launcher3` is one of those: its
+"add card" list carries official apps only).
+
+Turn it on in DiPlay settings, under **Advanced → Home-screen bubble**, and allow **Display over
+other apps** (the settings screen offers it, or over ADB):
+
+```bash
+adb shell appops set com.shihab.diplay SYSTEM_ALERT_WINDOW allow
+```
+
+Behaviour:
+
+- it shows the lynkPlay logo, the same tile the launcher's app list shows;
+- its height defaults to 10% of the screen height and the width follows the logo, and
+  **Bubble size** in the same card changes it (8 / 10 / 12 / 16%);
+- it hides as soon as any DiPlay screen is in front, so it never covers CarPlay or the settings;
+- it comes back about half a second after you leave DiPlay;
+- drag moves it and the position is remembered;
+- hold it to lock the place (a ring fills while you hold) and hold it again to unlock, so a
+  driver cannot move it by accident;
+- tapping it opens CarPlay when a session is up, and DiPlay's settings otherwise.
+
 ## Troubleshooting
 
 | Problem | Check |
@@ -188,3 +215,4 @@ It runs without system privileges. BYD's home stays installed, and the **BYD hom
 | Embedded map says `disabled` | Turn on "Share the live map with other launchers" in DiPlay. |
 | Embedded map stays on "waiting" | CarPlay is not connected, or "CarPlay map on instrument cluster" is off. |
 | Widget says "CarPlay is not connected" while CarPlay works | Open DiPlay once after installing it; the widget follows the running session. |
+| Bubble is missing | "Home-screen bubble" is on, "Draw over other apps" is allowed, and no DiPlay screen is in front. |

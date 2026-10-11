@@ -859,4 +859,11 @@
     <string name="bluetooth_connections_not_real">此車機的系統藍牙回報「已連線」，但實際上沒有連到 iPhone：連一個不存在的服務也回報成功。這裡的藍牙由廠商自己的模組處理，App 無法使用，所以此車機無法使用無線 CarPlay。請嘗試使用 USB 連線。</string>
     <string name="settings_fce_cluster_guidance">FCE 儀表導航（實驗性）</string>
     <string name="settings_fce_cluster_guidance_description">在 FCE 平台車機上，透過車機的車輛服務把 CarPlay 轉向箭頭和到下一路口的距離顯示在儀表的導航畫面。僅在一輛車上測試過；如果儀表顯示異常，請關閉。</string>
+    <string name="settings_launcher_bubble">桌面懸浮球</string>
+    <string name="settings_launcher_bubble_description">在車機桌面顯示一個 lynkPlay 懸浮球：點它直接回到 CarPlay，可拖動位置；打開 lynkPlay 時自動隱藏，離開後重新出現。長按鎖定位置，再次長按解鎖。需要「顯示在其他應用上層」權限。</string>
+    <string name="settings_launcher_bubble_size">懸浮球大小</string>
+    <string name="settings_launcher_bubble_locked">位置已鎖定</string>
+    <string name="settings_launcher_bubble_unlocked">位置已解鎖</string>
+    <string name="settings_launcher_bubble_hold_to_lock">長按 鎖定</string>
+    <string name="settings_launcher_bubble_hold_to_unlock">長按 解鎖</string>
 </resources>

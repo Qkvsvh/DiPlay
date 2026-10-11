@@ -799,4 +799,11 @@
     <string name="bluetooth_connections_not_real">يُبلغ بلوتوث Android في وحدة القيادة هذه عن اتصال، لكن لا شيء يصل إلى iPhone: حتى الاتصال بخدمة غير موجودة ينجح. البلوتوث هنا يديره مكوّن خاص بالشركة المصنّعة لا تستطيع التطبيقات استخدامه، لذلك لا يمكن أن يعمل CarPlay اللاسلكي على وحدة القيادة هذه. جرّب اتصال USB.</string>
     <string name="settings_fce_cluster_guidance">الإرشاد في عدادات FCE (تجريبي)</string>
     <string name="settings_fce_cluster_guidance_description">يعرض أسهم CarPlay ومسافة المنعطف التالي في واجهة الملاحة بلوحة العدادات على وحدات FCE، عبر الكتابة إلى خدمة المركبة في الوحدة. جُرّب على سيارة واحدة فقط؛ أوقفه إذا تصرفت لوحة العدادات بشكل غير متوقع.</string>
+    <string name="settings_launcher_bubble">فقاعة الشاشة الرئيسية</string>
+    <string name="settings_launcher_bubble_description">يعرض شعار lynkPlay كفقاعة فوق الشاشة الرئيسية للوحدة: المسها للعودة إلى CarPlay واسحبها إلى أي مكان. تختفي فور فتح lynkPlay وتعود عند مغادرته. اضغط مطولاً لتثبيت الموضع واضغط مطولاً مرة أخرى لتحريره. تحتاج إلى إذن العرض فوق التطبيقات الأخرى.</string>
+    <string name="settings_launcher_bubble_size">حجم الفقاعة</string>
+    <string name="settings_launcher_bubble_locked">تم تثبيت الموضع</string>
+    <string name="settings_launcher_bubble_unlocked">تم تحرير الموضع</string>
+    <string name="settings_launcher_bubble_hold_to_lock">اضغط مطولاً للتثبيت</string>
+    <string name="settings_launcher_bubble_hold_to_unlock">اضغط مطولاً للتحرير</string>
 </resources>
