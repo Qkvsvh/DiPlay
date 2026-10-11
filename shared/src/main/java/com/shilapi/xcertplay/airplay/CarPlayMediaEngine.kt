@@ -72,10 +72,9 @@ class CarPlayMediaEngine(
         val playoutLatencyMs: Int,
         @Volatile var firstSample: Int? = null,
         @Volatile var originNs: Long? = null,
-        // Highest RTP sample received. The /feedback sampleTime must never pass this, otherwise a
-        // stream that stopped receiving keeps reporting an advancing position and iOS stops it.
-        @Volatile var lastReceivedSample: Int? = null,
-    )
+    ) {
+        val position = FeedbackPositionMonitor(format.sampleRate)
+    }
 
     private data class PendingIapTunnel(
         val bridge: AirPlayIapTunnelStream,
@@ -209,7 +208,7 @@ class CarPlayMediaEngine(
                 }
 
                 override fun onRtp(rtp: ByteArray, sample: Int) {
-                    meta.lastReceivedSample = sample
+                    meta.position.observeRtp(sample)
                     clockProbe.observe(sample, System.nanoTime())?.let { hz ->
                         session.logDebug(
                             "Audio: rtp clock type=$type audioType=$audioType " +
@@ -235,7 +234,7 @@ class CarPlayMediaEngine(
         // The Geely/Lynk head unit only delivers the first input packet that normally triggers the
         // microphone start on the first session; later sessions receive none, so start the uplink as
         // soon as the input stream is set up (MicrophoneUplink.start is idempotent).
-        if (microphone != null && com.shilapi.xcertplay.network.LynkHeadUnit.detected) {
+        if (microphone != null && com.shilapi.xcertplay.network.GeelyHeadUnit.detected) {
             sink.onMicrophoneStarted(streamId, microphone)
         }
         return linkedMapOf(
@@ -471,16 +470,14 @@ class CarPlayMediaEngine(
                     (nowNs - originNs) / 1e9 - meta.playoutLatencyMs / 1000.0,
                 )
                 val firstUnsigned = firstSample.toLong() and 0xffff_ffffL
-                val wallClockSample = (firstUnsigned + Math.round(elapsedSec * meta.format.sampleRate)) and
+                val sampleTime = (firstUnsigned + Math.round(elapsedSec * meta.format.sampleRate)) and
                     0xffff_ffffL
-                // The accessory cannot have played past what it received. Clamp so a starved stream
-                // reports a frozen position instead of racing ahead, which makes iOS stop the audio.
-                val received = meta.lastReceivedSample?.toLong()?.and(0xffff_ffffL)
-                val sampleTime = if (received == null) wallClockSample else minOf(wallClockSample, received)
                 entry["streamConnectionID"] = unsignedPlistInteger(meta.connectionId ?: 0L)
                 entry["timestamp"] = session.syncedNtp()
                 entry["timestampRawNs"] = nowNs
                 entry["sampleTime"] = sampleTime
+                meta.position.onFeedback(meta.type, entry["streamConnectionID"], sampleTime, nowNs)
+                    ?.let(session::logDebug)
             }
             entry
         } + listOfNotNull(buffered?.let { it.stream.feedback(session.syncedNtp(), it.connectionId) })

@@ -11,7 +11,7 @@ import android.util.Log
 import com.geely.lib.oneosapi.input.IInputListener
 import com.geely.lib.oneosapi.input.IInputManager
 import com.shilapi.xcertplay.airplay.CarPlayMediaButton
-import com.shilapi.xcertplay.network.LynkHeadUnit
+import com.shilapi.xcertplay.network.GeelyHeadUnit
 
 /**
  * Geely/Lynk steering-wheel media keys.
@@ -26,7 +26,11 @@ import com.shilapi.xcertplay.network.LynkHeadUnit
  * the iPhone's music, so forwarding the media keys too would double-fire; only the microphone key is
  * registered then, for the long-press Siri shortcut.
  *
- * Silently does nothing off this head unit ([LynkHeadUnit.detected]).
+ * The microphone key's long press is answered by the car's HiCar app, which registers for the same
+ * code and cannot be intercepted from here; disable HiCar over ADB if Siri should answer instead
+ * (see docs/COMPATIBILITY.md).
+ *
+ * Silently does nothing off this head unit ([GeelyHeadUnit.detected]).
  */
 internal object GeelyWheelKeys {
     private const val TAG = "lynkPlay-GeelyWheel"
@@ -44,7 +48,7 @@ internal object GeelyWheelKeys {
     /** Binds while a CarPlay session is active; safe to call repeatedly. */
     @Synchronized
     fun start(context: Context) {
-        if (!LynkHeadUnit.detected) return
+        if (!GeelyHeadUnit.detected) return
         appContext = context.applicationContext
         if (bound) return
         bindLocked()
@@ -86,7 +90,7 @@ internal object GeelyWheelKeys {
                 override fun onHoldingPressStopped(keyCode: Int, softKeyFunction: Int) {}
                 override fun onLongPressTriggered(keyCode: Int, softKeyFunction: Int) {
                     Log.i(TAG, "long press key=$keyCode func=$softKeyFunction")
-                    // The microphone key's long press: Siri instead of the (disabled) HiCar.
+                    // The microphone key's long press: Siri, once the car's HiCar app is disabled.
                     if (keyCode == GeelyWheelKeyCodes.KEY_VOICE_ASSIST) {
                         Log.i(TAG, "Siri requested=${CarPlayMediaKeys.onExternalSiriKey()}")
                     }

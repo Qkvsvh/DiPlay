@@ -8,8 +8,7 @@ import org.junit.Test
 /**
  * With CarPlay audio on the car's Bluetooth, the head unit's own AVRCP already drives the iPhone's
  * music. Registering the wheel's media keys over iAP2 as well makes play/pause and skip double-fire,
- * so only the microphone key (long press -> Siri) may be wired then. This is the fork's own rule:
- * upstream never linked [AirPlayPersistence.loadCarBluetoothAudio] to the wheel keys.
+ * so only the microphone key (long press -> Siri) may be wired then.
  */
 class GeelyWheelKeyCodesTest {
 
