@@ -598,6 +598,14 @@
     <string name="wheel_zoom_note_volume">Volumen</string>
     <string name="wheel_joystick">Joystick de CarPlay en el volante</string>
     <string name="wheel_joystick_description">El botón multimedia de BYD activa y desactiva un joystick para la pantalla central de CarPlay, como el mando giratorio de un coche. Mientras está activado, la rueda de volumen o ⏮ ⏭ mueven la selección, ⏯ selecciona y el botón personalizable vuelve atrás; esos botones dejan entonces de controlar la música y el volumen. Durante una llamada los botones sirven para la llamada. En algunos coches el volumen de la consola también mueve la selección.</string>
+    <string name="settings_external_controller">Controlador externo (experimental)</string>
+    <string name="settings_external_controller_description">Las teclas de un teclado, mando o controlador giratorio Bluetooth emparejado mueven la selección y eligen en CarPlay, como el mando giratorio de un coche. La pantalla táctil sigue funcionando. Se aplica al instante.</string>
+    <string name="settings_usb_connection">Conexión USB</string>
+    <string name="settings_usb_charging">Carga del iPhone</string>
+    <string name="settings_usb_charging_normal">Normal (2,4 A)</string>
+    <string name="settings_usb_charging_reduced">Reducida (1,5 A)</string>
+    <string name="settings_usb_charging_low">Baja (0,5 A)</string>
+    <string name="settings_usb_charging_description">Corriente de carga que DiPlay ofrece al iPhone por USB. Si CarPlay por cable se corta cada pocos segundos y el iPhone se vuelve a conectar solo, puede que el puerto USB del coche no dé suficiente energía: prueba Reducida y después Baja. El iPhone cargará más despacio. Se aplica en la próxima conexión USB.</string>
     <string name="wheel_joystick_auto_off">El joystick se desactiva solo</string>
     <string name="wheel_joystick_auto_off_description">Tras 15 segundos sin pulsar nada y al iniciar una ruta, los botones vuelven a controlar la música y el volumen.</string>
     <string name="wheel_joystick_on">Joystick activado</string>
@@ -666,11 +674,15 @@
     <string name="update_check">Buscar actualizaciones</string>
     <string name="update_checking">Buscando…</string>
     <string name="update_up_to_date">Ya tienes la última versión</string>
-    <string name="update_download">Descargar %1$s</string>
+    <string name="update_download">Descargar actualización</string>
     <string name="update_downloading">Descargando · %1$d%%</string>
     <string name="update_verifying">Verificando…</string>
     <string name="update_install">Instalar %1$s</string>
     <string name="update_failed">Error de actualización</string>
+    <string name="update_available_home">Actualización disponible</string>
+    <string name="update_saved_to">Guardado en %1$s</string>
+    <string name="settings_background_update_checks">Buscar actualizaciones en segundo plano</string>
+    <string name="settings_background_update_checks_description">Una vez al día, DiPlay busca una versión nueva en GitHub y la muestra en la pantalla de inicio. Nunca descarga sin que lo toques.</string>
     <string name="setup_guide">Guía de configuración</string>
     <string name="setup_guide_description">Detecta tu versión de DiLink, elige una conexión y activa las funciones adecuadas para tu coche.</string>
     <string name="setup_step_of">PASO %1$d DE %2$d</string>
@@ -752,4 +764,6 @@
     <string name="settings_ambient_parked_notice">Configura con el vehículo estacionado. Compatibilidad experimental con algunas interfaces BYD; puede variar según modelo y firmware. El nivel 0 es el mínimo OEM, no apagado.</string>
     <string name="settings_ambient_checking">Comprobando…</string>
     <string name="settings_ambient_unavailable">La comprobación de solo lectura falló: falta autorización ADB existente o una interfaz compatible. No se guardaron ajustes. Configura el acceso por separado con el vehículo estacionado; esta función no activa ADB ni solicita autorización.</string>
+    <string name="settings_ambient_album">Seguir la portada del álbum</string>
+    <string name="settings_ambient_album_description">Usa el color de la portada o colores cercanos disponibles del vehículo. Las portadas grises, negras o ausentes usan los 31 colores; las mayormente blancas pueden usar blanco o blanco frío.</string>
 </resources>
