@@ -2,7 +2,6 @@ package com.shilapi.xcertplay.network
 
 import android.content.Context
 import android.net.wifi.WifiManager
-import android.os.Build
 import android.os.SystemClock
 import android.util.Log
 import com.shilapi.xcertplay.adb.AdbKeys
@@ -20,7 +19,8 @@ import com.shilapi.xcertplay.adb.LocalAdb
  *    larger music buffer avoids needless underruns.
  *
  * Everything below is gated by [detected] so the same build keeps stock behaviour on other head
- * units (and in unit tests, where `Build` reports Robolectric).
+ * units (and in unit tests, where `Build` reports Robolectric). Detection is shared with
+ * [GeelyHeadUnit], which the upstream wheel-key and microphone paths also use.
  */
 object LynkHeadUnit {
     private const val TAG = "lynkPlay-Lynk"
@@ -34,20 +34,8 @@ object LynkHeadUnit {
     /** CarPlay shows this name under the car button instead of the stock "BYD". */
     const val OEM_LABEL = "LYNK & CO"
 
-    private val identifiers: List<String>
-        get() = runCatching {
-            listOf(
-                Build.PRODUCT,      // geely_fx11
-                Build.DEVICE,       // msmnile_gvmq
-                Build.MODEL,        // CS11_A4
-                Build.MANUFACTURER,
-                Build.BRAND,
-            ).map { it.lowercase() }
-        }.getOrDefault(emptyList())
-
-    val detected: Boolean = identifiers.any { id ->
-        id.contains("geely") || id.contains("lynk") || id == "cs11_a4" || id == "msmnile_gvmq"
-    }
+    /** The head unit this branch targets; see [GeelyHeadUnit] for the identifiers. */
+    val detected: Boolean = GeelyHeadUnit.detected
 
     fun isWifiEnabled(context: Context): Boolean =
         runCatching { context.getSystemService(WifiManager::class.java)?.isWifiEnabled }.getOrNull() == true
