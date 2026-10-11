@@ -13,6 +13,7 @@
   - package `com.shihab.diplay`, signed `CN=DiPlay Lynk` (self-signed, *not* the official release signature).
   - provided by the maintainer, or build it with `carDocs/build-lynk.sh` (it extracts the MFi assets from the copy already installed on the head unit).
 - **Heads-up**: this unit's adbd **filters the literal word `install`** out of shell commands (Geely/Lynk anti-tamper), so the install command must be split — see step 1.
+- **⚠️ Security**: the built APK embeds the **offline MFi identity extracted from your head unit** (Apple credentials). **Do not redistribute the APK.** Share only the source and scripts and let users build with their own unit's assets (`build-lynk.sh` extracts them automatically).
 
 ---
 
