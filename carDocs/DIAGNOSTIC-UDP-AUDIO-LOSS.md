@@ -25,8 +25,9 @@ Run a **UDP listener on the head unit** and push a stream from a PC with the **s
    > time-shares off-channel and pollutes the result.
 2. **Listen on the head unit** (either):
    - with `iperf` present: `/vendor/bin/iperf -s -u -i 1`
-   - otherwise a **minimal UDP receiver app** (bind `:::<port>`, count packets, log per-second
-     `packets / bytes / sinceLastMs / max gap`). This is what was used here (about 100 lines).
+   - otherwise the minimal receiver app in this repo: **`carDocs/tools/udp-soak/`** (about 100 lines;
+     binds `::5001`, logs `packets/bytes/sinceLastMs/gaps/maxGap` per second to logcat and a file, and
+     can create the P2P group / local-only hotspot so a PC can join). Build steps in its `README.md`.
 3. **Send from the PC**:
    ```bash
    # with iperf:

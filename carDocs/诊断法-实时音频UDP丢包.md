@@ -21,8 +21,7 @@
    > ⚠️ 不要让车机的 **P2P（无线 CarPlay）**同时开着跑——单 Wi-Fi 芯片会 off-channel 抢占，污染结果。
 2. **车机侧监听**（任选）：
    - 有 `iperf` 时最省事：`/vendor/bin/iperf -s -u -i 1`
-   - 没有就写一个**最小 UDP 接收 App**（要点：绑定 `:::<端口>`；每收到一包计数；每秒把 `packets/bytes/sinceLastMs/最大间隔` 打到 logcat/文件）。
-     本车实测就是用这样一个独立小 App（约一百行）完成的。
+   - 否则用本仓的最小接收 App：**`carDocs/tools/udp-soak/`**（约一百行；绑定 `::5001`、每秒把 `packets/bytes/sinceLastMs/gaps/maxGap` 打到 logcat + 文件；也能自建 P2P 组/热点让 PC 连过来）。构建见其 `README.md`。
 
 ## 附录 A：最小接收 App 要点（约一百行）
 
