@@ -31,3 +31,6 @@ include(":maphost")
 project(":maphost").projectDir = file("samples/maphost")
 include(":home")
 project(":home").projectDir = file("samples/home")
+// Diagnostic probe for the head-unit HUD / cluster APIs. Not shipped.
+include(":carprobe")
+project(":carprobe").projectDir = file("samples/carprobe")

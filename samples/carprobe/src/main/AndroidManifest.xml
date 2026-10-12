@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- The DIM service is bindable with a normal-level permission; declare it so the probe can
+         try to reach the cluster navi interaction directly (route A). -->
+    <uses-permission android:name="geely.oneos.permission.SERVICE" />
+
+    <!-- The hub and the stock map are bound by explicit component, so API 30+
+         package visibility needs them declared (or QUERY_ALL_PACKAGES). -->
+    <queries>
+        <package android:name="com.geely.service.oneosapi" />
+        <package android:name="com.geely.map" />
+        <package android:name="com.geely.naviService" />
+        <package android:name="com.geely.dimservice" />
+    </queries>
+
+    <application
+        android:label="CarProbe"
+        android:theme="@android:style/Theme.DeviceDefault">
+        <activity
+            android:name=".ProbeActivity"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|density|uiMode"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

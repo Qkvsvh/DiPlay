@@ -27,6 +27,8 @@
 | [`车机兼容记录.md`](车机兼容记录.md) | 各问题的**实测根因与处理**（Wi-Fi/热点、方向盘键、麦克风、实时音频、跨 AP 实测结论） |
 | [`车机安装与桌面说明.md`](车机安装与桌面说明.md) | 安装机制（adbd 关键字过滤）、桌面环境、命令速查 |
 | [`车机桌面集成结论.md`](车机桌面集成结论.md) | 桌面集成结论 |
+| [`吉利地图HUD显示机制.md`](吉利地图HUD显示机制.md) | 车机自带高德地图（`com.geely.map`）如何把 HUD/副驾屏地图渲染进宿主 `Surface`（原厂 APK 分析见 [`extracted/`](extracted/README.md)） |
+| [`吉利仪表与HUD接入调研.md`](吉利仪表与HUD接入调研.md) | 第三方 App 能用的仪表/HUD 通道（DIM 导航协议、仪表 Presentation）与死路，含探针 App `samples/carprobe` 实测 |
 
 ## 脚本
 
