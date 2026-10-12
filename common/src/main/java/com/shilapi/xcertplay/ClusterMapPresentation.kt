@@ -151,6 +151,18 @@ internal class ClusterMapPresentation(
         setContentView(root)
     }
 
+    override fun onStart() {
+        super.onStart()
+        // On the Geely head unit the cluster keeps its factory layer over Android's display 2
+        // until the DIM service is asked to project; the stock map does the same.
+        if (GeelyClusterDisplay.supported()) GeelyClusterProjection.set(true)
+    }
+
+    override fun onStop() {
+        if (GeelyClusterDisplay.supported()) GeelyClusterProjection.set(false)
+        super.onStop()
+    }
+
     /**
      * Cross-fades the waiting placeholder over the live map. TextureView can also fade the
      * video; legacy SurfaceView stays visible under the placeholder to preserve its surface.
