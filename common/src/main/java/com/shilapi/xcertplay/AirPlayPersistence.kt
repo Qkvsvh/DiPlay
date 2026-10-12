@@ -936,12 +936,7 @@ object AirPlayPersistence {
     fun loadClusterContent(context: Context): CarPlayClusterDisplay.Content =
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(KEY_CLUSTER_CONTENT, null)
             ?.let { name -> CarPlayClusterDisplay.Content.entries.firstOrNull { it.name == name } }
-            ?: when {
-                AdbClusterRouter.enabled(context) && !loadLegacyClusterEnabled(context) -> CarPlayClusterDisplay.Content.INSTRUMENTS
-                // The Geely cluster panel shows CarPlay's map; DiPlay draws its own turn card over it.
-                GeelyClusterDisplay.supported() -> CarPlayClusterDisplay.Content.MAP_WITH_CUSTOM_CARD
-                else -> CarPlayClusterDisplay.Content.MAP
-            }
+            ?: if (AdbClusterRouter.enabled(context) && !loadLegacyClusterEnabled(context)) CarPlayClusterDisplay.Content.INSTRUMENTS else CarPlayClusterDisplay.Content.MAP
 
     fun saveClusterContent(context: Context, content: CarPlayClusterDisplay.Content) {
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(KEY_CLUSTER_CONTENT, content.name).apply()
