@@ -302,6 +302,49 @@ route(action=1, dest=30.2497,120.1441 西湖风景区)
 因此仍按第八节收敛——**只做「CarPlay 画面投仪表」（`Presentation` / `GeelyClusterDisplay`），不宣称 HUD/仪表导航**。
 以上 DIM/OneOS 能力保留在 `samples/carprobe`，供将来原厂放开或有系统权限时再启用。
 
+## 十、CarPlay 画面投仪表：打通（2026-10-13）
+
+第八节留下了“能投屏、但看不到”的问题，本节补上**最后一块拼图**。
+
+### 10.1 症状与根因
+
+- DiPlay 在 display 2 建了 `Presentation`（`Sys2037`，`isVisible=true`、`mCurrentFocus` 就是它、Surface 1920×720、`SCREEN_TYPE_ALT active=true`），
+  但**仪表仍显示车机原厂表盘**。
+- 用探针投一块**不透明**画面到 display 2，**同样盖不住**原厂表盘 → 说明仪表把 Android 的 display 2 层**压在原厂层之下**，
+  除非车机被要求**投影到仪表**。
+
+### 10.2 开关：DIM 服务的“投影”调用
+
+```
+ServiceManager.getService("DimNaviService")
+  → ecarx.dimprotocol.custom.service.IDimNaviService
+  → notifyDimProjectScreenSwitch(true/false)      // 事务码 9，int
+```
+调用后服务端日志：`DimNaviService: notifyDimProjectScreenSwitchFun turnId(true)`。
+发 `true` 的瞬间，Android display 2（我们的 Presentation）就盖到仪表上了。
+
+原厂地图走的也是这一路：`notifyDimProjectScreenSwitchFun → SomeIPUtils.Navi.sendScreenAreaAndResultInfo(naviDisplayArea=1)`。
+
+### 10.3 实现（已提交）
+
+| 文件 | 改动 |
+| --- | --- |
+| `common/.../GeelyClusterProjection.kt`（新增） | 反射取 `DimNaviService` binder，调 `notifyDimProjectScreenSwitch`（事务码 9）；仅 `GeelyClusterDisplay.supported()` 时使用 |
+| `common/.../ClusterMapPresentation.kt` | `onStart()` → 开投影，`onStop()` → 关投影（吉利设备） |
+
+提交：`dbeb4672`（在 `4e8210ad` 的 `GeelyClusterDisplay` 之上）。
+
+### 10.4 结果
+
+打开「仪表地图」后，仪表直接显示 **CarPlay 的仪表流**（`SCREEN_TYPE_ALT`）：
+```
+dim projection: notifyDimProjectScreenSwitch(true) ok
+cluster presentation shown display=2 name=HDMI 屏幕
+cluster surface 1920x720 / cluster stream active=true
+```
+**本机「CarPlay 画面投仪表」可用**。安全区/marker 设置照旧用于避开车机自身读数。
+
+
 
 
 
