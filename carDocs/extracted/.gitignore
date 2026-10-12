@@ -1,5 +1,14 @@
 # Pulled head-unit artifacts stay local: they are large, proprietary and
 # already covered by the root ignore rules for *.apk.
-geely-map/GeelyMap.apk
-geely-map/dex/
-geely-map/out/
+#
+# Keep only the index READMEs in the repository; every pulled file and every
+# decompiled source tree stays out of git.
+*
+!.gitignore
+!README.md
+!geely-map/
+!geely-map/README.md
+!diminteraction/
+!diminteraction/README.md
+!oneos-dimservice/
+!oneos-dimservice/README.md
