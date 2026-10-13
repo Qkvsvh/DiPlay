@@ -2,6 +2,9 @@
 
 Instructions for coding agents that work on DiPlay.
 
+> **AI 接手指南（lynk 分支）**：先读 `carDocs/agent/README.md` —— 那里有项目全貌、
+> 当前交付状态与会话日志（AI 协作状态持久化机制），按其流程恢复上下文后再动代码。
+
 ## Checks
 
 Run the CI command from `.github/workflows/android.yml` before you report a change as done:
