@@ -6,5 +6,12 @@
 | 目录 | 应用 | 说明 |
 | --- | --- | --- |
 | [`geely-map/`](geely-map/README.md) | `com.geely.map`（GeelyMap.apk，`/vendor/app/GeelyMap/`） | 车机自带高德地图（AutoSDK）。HUD / 副驾屏地图渲染的来源。 |
+| [`diminteraction/`](diminteraction/README.md) | `com.autolink.diminteraction`（DIMInteraction.apk） | 仪表/HUD 导航与投影通道。 |
+| [`oneos-dimservice/`](oneos-dimservice/README.md) | `com.geely.dimservice`（OneOS-DIMService.apk） | 谁开关仪表导航区。 |
+| `system/` | `/system`、`/system_ext`、`/product`、`/vendor` 全量（117 个 APK + framework JAR + permissions + getprop） | 整机系统逆向，见 [`../headunit/`](../headunit/README.md)。 |
 
-相关结论文档：[`../吉利地图HUD显示机制.md`](../吉利地图HUD显示机制.md)
+相关结论文档：
+
+- [`../吉利地图HUD显示机制.md`](../吉利地图HUD显示机制.md)
+- [`../吉利仪表与HUD接入调研.md`](../吉利仪表与HUD接入调研.md)
+- [`../headunit/README.md`](../headunit/README.md)（整机框架/APK 逆向，含键码与协议常量表）
