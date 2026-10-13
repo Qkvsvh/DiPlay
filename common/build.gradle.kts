@@ -24,8 +24,10 @@ android {
 
     testOptions {
         unitTests.isIncludeAndroidResources = true
-        // The UI suite covers several SDKs and locale-specific resource sandboxes.
-        unitTests.all { it.maxHeapSize = "1g" }
+        // The UI suite covers several SDKs and locale-specific resource sandboxes. The fork adds its
+        // own Robolectric suites (Geely cluster, launcher bubble, …) on top of upstream's, so the
+        // combined heap need exceeds upstream's 1g and the shared suite OOMs at 1g.
+        unitTests.all { it.maxHeapSize = "2g" }
     }
 }
 
